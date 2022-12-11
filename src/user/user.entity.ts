@@ -9,6 +9,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
+import { Role } from "./role.enum";
 
 @Entity()
 export class User {
@@ -30,6 +31,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column()
+  roles: Role;
 
   constructor(data: Partial<User> = {}) {
     Object.assign(this, data);

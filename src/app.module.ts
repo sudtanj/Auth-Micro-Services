@@ -5,10 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { dataSourceOptions } from './data-source';
 import { HealthController } from './health.controller';
-import { TodoModule } from './todo/todo.module';
 import { UserModule } from './user/user.module';
+import { dataSourceOptions } from "./data-source";
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { UserModule } from './user/user.module';
     TerminusModule,
     UserModule,
     AuthModule,
-    TodoModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
