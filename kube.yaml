@@ -16,6 +16,19 @@ spec:
       containers:
         - name: api
           image: sudtanj/auth-micro-services:latest
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: PORT
+                  optional: false
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: DATABASE_URL
+                  optional: false
           ports:
             - containerPort: 80
 ---
