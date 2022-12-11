@@ -4,13 +4,14 @@ import { createMock } from 'ts-auto-mock';
 import { User } from '../user/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { Role } from "../user/role.enum";
 
 describe('Auth Controller', () => {
   let controller: AuthController;
   let mockedAuthService: jest.Mocked<AuthService>;
   const user = createMock<Omit<User, 'password'>>({
     name: 'John Doe',
-    email: 'john@doe.me',
+    username: 'john@doe.me',
   }) as User;
 
   beforeEach(async () => {
@@ -37,13 +38,14 @@ describe('Auth Controller', () => {
   it('should register a new user', async () => {
     const register = {
       name: 'John Doe',
-      email: 'john@doe.me',
+      username: 'john@doe.me',
       password: 'Pa$$w0rd',
+      roles: Role.Admin,
     };
 
     mockedAuthService.register.mockResolvedValue(
       createMock<Omit<User, 'password'>>({
-        email: register.email,
+        username: register.username,
         name: register.name,
       }) as User,
     );

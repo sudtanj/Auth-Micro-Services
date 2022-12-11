@@ -7,6 +7,7 @@ import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import type { SignUp } from './dto/sign-up.dto';
 import type { JwtPayload } from './interfaces/jwt-payload.interface';
+import { Role } from "../user/role.enum";
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -43,14 +44,15 @@ describe('AuthService', () => {
   it('should register a new user', async () => {
     const signUp: SignUp = {
       name: 'John Doe',
-      email: 'john@doe.me',
+      username: 'john@doe.me',
       password: 'Pa$$w0rd',
+      roles: Role.Admin
     };
 
     mockedUserService.create.mockResolvedValueOnce(createMock<User>(signUp));
     const user = await service.register(signUp);
 
-    expect(user).toHaveProperty('email', signUp.email);
+    expect(user).toHaveProperty('email', signUp.username);
     expect(user).toHaveProperty('name', signUp.name);
     expect(user).not.toHaveProperty('password');
   });
@@ -61,7 +63,7 @@ describe('AuthService', () => {
 
     mockedUserService.findOne.mockResolvedValueOnce(
       createMock<User>({
-        email,
+        username: email,
         checkPassword: jest.fn().mockResolvedValue(true),
       }),
     );
@@ -92,7 +94,7 @@ describe('AuthService', () => {
 
     mockedUserService.findOne.mockResolvedValueOnce(
       createMock<User>({
-        email,
+        username: email,
         checkPassword: jest.fn().mockResolvedValue(false),
       }),
     );
@@ -112,7 +114,7 @@ describe('AuthService', () => {
     };
 
     mockedUserService.findOne.mockResolvedValueOnce(
-      createMock<User>({ email: payload.sub }),
+      createMock<User>({ username: payload.sub }),
     );
     const user = await service.verifyPayload(payload);
 
@@ -137,7 +139,7 @@ describe('AuthService', () => {
   });
 
   it('should sign a new JWT', () => {
-    const user = createMock<User>({ email: 'john@doe.me' });
+    const user = createMock<User>({ username: 'john@doe.me' });
 
     mockedJwtService.sign.mockReturnValueOnce('j.w.t');
     const token = service.signToken(user);

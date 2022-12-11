@@ -20,20 +20,20 @@ export class AuthService {
     return user;
   }
 
-  async login(email: string, password: string): Promise<User> {
+  async login(username: string, password: string): Promise<User> {
     let user: User;
 
     try {
-      user = await this.userService.findOne({ where: { email } });
+      user = await this.userService.findOne({ where: { username: username } });
     } catch (err) {
       throw new UnauthorizedException(
-        `There isn't any user with email: ${email}`,
+        `There isn't any user with email: ${username}`,
       );
     }
 
     if (!(await user.checkPassword(password))) {
       throw new UnauthorizedException(
-        `Wrong password for user with email: ${email}`,
+        `Wrong password for user with email: ${username}`,
       );
     }
     delete user.password;
@@ -45,7 +45,7 @@ export class AuthService {
     let user: User;
 
     try {
-      user = await this.userService.findOne({ where: { email: payload.sub } });
+      user = await this.userService.findOne({ where: { username: payload.sub } });
     } catch (error) {
       throw new UnauthorizedException(
         `There isn't any user with email: ${payload.sub}`,
@@ -58,7 +58,7 @@ export class AuthService {
 
   signToken(user: User): string {
     const payload = {
-      sub: user.email,
+      sub: user.username,
     };
 
     return this.jwtService.sign(payload);

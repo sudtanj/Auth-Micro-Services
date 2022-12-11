@@ -27,7 +27,7 @@ describe('IsUserAlreadyExist', () => {
             findOneBy: jest
               .fn()
               .mockImplementation((where: FindOptionsWhere<User>) => {
-                if (where.email === 'john@doe.me') {
+                if (where.username === 'john@doe.me') {
                   return createMock<User>();
                 }
               }),

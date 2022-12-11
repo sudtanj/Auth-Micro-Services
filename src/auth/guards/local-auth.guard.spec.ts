@@ -68,7 +68,7 @@ describe('LocalAuthGuard', () => {
   it('should authenticate using email and password', async () => {
     mockedAuthService.login.mockResolvedValueOnce(
       createMock<User>({
-        email: 'john@doe.me',
+        username: 'john@doe.me',
         id: 1,
         name: 'John Doe ',
       }),

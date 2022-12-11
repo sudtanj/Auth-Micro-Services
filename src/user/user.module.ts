@@ -5,6 +5,8 @@ import { User } from './user.entity';
 import { UserService } from './user.service';
 import { IsUserAlreadyExist } from './is-user-already-exist.validator';
 import { UserController } from "./user.controller";
+import { RolesGuard } from "./roles.guard";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],

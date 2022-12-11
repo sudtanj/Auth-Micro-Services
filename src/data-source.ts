@@ -6,15 +6,7 @@ export const dataSourceOptions: DataSourceOptions = {
   url: process.env.DATABASE_URL,
   entities: [User],
   migrations: [],
-  synchronize: false,
-  extra: {
-    ssl:
-      process.env.SSL_MODE === 'require'
-        ? {
-            rejectUnauthorized: false,
-          }
-        : false,
-  },
+  synchronize: true,
 };
 
 export const appDataSource = new DataSource(dataSourceOptions);

@@ -1,20 +1,10 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, UseInterceptors, } from '@nestjs/common';
 
 import { AuthUser } from '../user/user.decorator';
 import { User } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { SignUp } from './dto/sign-up.dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { SessionAuthGuard } from './guards/session-auth.guard';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
@@ -30,11 +20,10 @@ export class AuthController {
   }
 
   @Post('login')
-  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(TokenInterceptor)
-  async login(@AuthUser() user: User): Promise<User> {
-    return user;
+  async login(@Body() user: Pick<User, "username" | "password">): Promise<User> {
+    return this.authService.login(user.username, user.password)
   }
 
   @Get('/me')

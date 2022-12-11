@@ -3,9 +3,10 @@ import {
   IsNotEmpty,
   IsEmail,
   MinLength,
-  Validate,
+  Validate, IsString, IsIn,
 } from 'class-validator';
 import { IsUserAlreadyExist } from '../../user/is-user-already-exist.validator';
+import { Role } from "../../user/role.enum";
 
 export class SignUp {
   @IsDefined()
@@ -13,12 +14,17 @@ export class SignUp {
   readonly name: string;
 
   @IsDefined()
-  @IsEmail()
+  @IsString()
   @Validate(IsUserAlreadyExist)
-  readonly email: string;
+  readonly username: string;
 
   @IsDefined()
   @IsNotEmpty()
   @MinLength(8)
   readonly password: string;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @IsIn(Object.values(Role))
+  readonly roles: Role;
 }

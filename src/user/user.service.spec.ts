@@ -47,9 +47,9 @@ describe('UserService', () => {
     const email = 'john@doe.me';
 
     mockedUserRepository.findOne.mockResolvedValueOnce(
-      createMock<User>({ email }),
+      createMock<User>({ username: email }),
     );
-    const user = await service.findOne({ where: { email } });
+    const user = await service.findOne({ where: { username: email } });
 
     expect(user).toBeDefined();
     expect(user).toHaveProperty('email', 'john@doe.me');
@@ -59,7 +59,7 @@ describe('UserService', () => {
     mockedUserRepository.findOne.mockResolvedValueOnce(undefined);
 
     await expect(
-      service.findOne({ where: { email: 'notexisting@example.com' } }),
+      service.findOne({ where: { username: 'notexisting@example.com' } }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"There isn't any user with identifier: [object Object]"`,
     );
