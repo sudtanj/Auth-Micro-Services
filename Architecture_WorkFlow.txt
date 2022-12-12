@@ -1,0 +1,13 @@
+1. User login: The user must login to the system using their credentials (username and password) to gain access to the system.
+
+2. Authentication: The system then verifies the user’s credentials and grants access if the credentials are valid.
+
+3. User role: Depending on the user role, the system will allow different levels of access to the API.
+
+4. Create: If the user has the privilege to create a new user, they can do so by providing the required data (username, password, etc.).
+
+5. Read: If the user has the privilege to read user information, they can do so by providing the user ID.
+
+6. Update: If the user has the privilege to update user information, they can do so by providing the required data (username, password, etc.).
+
+7. Delete: If the user has the privilege to delete user information, they can do so by providing the user ID.
