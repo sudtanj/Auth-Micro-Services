@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
 import {
   HealthCheck,
   HealthCheckResult,
@@ -6,6 +6,8 @@ import {
   MemoryHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { User } from "./user/user.entity";
 
 @Controller('health')
 export class HealthController {
@@ -16,6 +18,7 @@ export class HealthController {
   ) {}
 
   @Get()
+  @ApiOperation({ summary: 'For docker purposes! to get the health status of the container' })
   @HealthCheck()
   check(): Promise<HealthCheckResult> {
     return this.health.check([

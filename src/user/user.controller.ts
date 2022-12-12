@@ -7,8 +7,11 @@ import { SignUp } from "../auth/dto/sign-up.dto";
 import { SessionAuthGuard } from "../auth/guards/session-auth.guard";
 import { JWTAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "./roles.guard";
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiBearerAuth()
 @Controller("/user")
+@ApiTags("User")
 export class UserController {
  constructor(
   private userService: UserService,
@@ -16,13 +19,19 @@ export class UserController {
  }
 
  @Get("/")
+ @HttpCode(HttpStatus.OK)
+ @ApiResponse({ status: 200, description: 'Success.', type: [User] })
+ @ApiOperation({ summary: 'list all user available. admin and user can access!' })
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
  @Roles(Role.Admin, Role.User)
- async list() {
+ async list(): Promise<User[]> {
   return this.userService.findAll({})
  }
 
  @Get("/:id")
+ @HttpCode(HttpStatus.OK)
+ @ApiResponse({ status: 200, description: 'Success.', type: User })
+ @ApiOperation({ summary: 'get detail of user. admin and user can access!' })
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
  @Roles(Role.Admin, Role.User)
  async detail(@Param("id") id: string) {
@@ -35,6 +44,8 @@ export class UserController {
 
  @Post('/')
  @HttpCode(HttpStatus.CREATED)
+ @ApiResponse({ status: HttpStatus.CREATED, description: 'Success.', type: User })
+ @ApiOperation({ summary: 'create new user. admin can access!' })
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
  @Roles(Role.Admin)
  async register(@Body() signUp: SignUp): Promise<User> {
@@ -43,6 +54,8 @@ export class UserController {
 
  @Patch("/:id")
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
+ @ApiResponse({ status: HttpStatus.OK, description: 'Success.', type: User })
+ @ApiOperation({ summary: 'update existing user. admin can access!' })
  @Roles(Role.Admin)
  async update(@Param("id") id: string, @Body() body: User) {
   return this.userService.update(Number.parseInt(id), body)
@@ -50,6 +63,8 @@ export class UserController {
 
  @Delete("/:id")
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
+ @ApiResponse({ status: HttpStatus.OK, description: 'Success.', type: User })
+ @ApiOperation({ summary: 'delete existing user. admin can access!' })
  @Roles(Role.Admin)
  async delete(@Param("id") id: string) {
   return this.userService.delete(Number.parseInt(id))

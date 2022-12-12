@@ -10,16 +10,20 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import { Role } from "./role.enum";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
+  @ApiProperty({ example: 1, description: 'Postgres id' })
   id: number;
 
   @Column()
+  @ApiProperty({ example: "John", description: 'name of the user' })
   name: string;
 
   @Column({ unique: true })
+  @ApiProperty({ example: "john", description: 'username for login' })
   username: string;
 
   @Column()
@@ -33,6 +37,7 @@ export class User {
   updatedAt: Date;
 
   @Column()
+  @ApiProperty({ example: "admin", description: 'User role' })
   roles: Role;
 
   constructor(data: Partial<User> = {}) {
