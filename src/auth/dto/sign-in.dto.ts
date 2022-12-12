@@ -5,7 +5,6 @@ import { ApiProperty } from "@nestjs/swagger";
 export class SignInDto {
  @IsDefined()
  @IsString()
- @Validate(IsUserAlreadyExist)
  @ApiProperty({ example: "john", description: 'username for login' })
  readonly username: string;
 
